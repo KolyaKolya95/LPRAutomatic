@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Win32;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LPRAutomatic
 {
@@ -23,6 +13,25 @@ namespace LPRAutomatic
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// FIndButton button for load image in to image form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FindButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Select a picture";
+            openFileDialog.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                FileNameTextBox.Text = openFileDialog.FileName;
+                CarImage.Source = new BitmapImage(new Uri(openFileDialog.FileName));
+            }
         }
     }
 }
