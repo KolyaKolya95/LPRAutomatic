@@ -37,6 +37,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -63,6 +65,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Bll\LicensePlateDetector.cs" />
+    <Compile Include="Interfaces\IProcessingLicensePlate.cs" />
+    <Compile Include="Model\InfoLicensePlateModel.cs" />
+    <Compile Include="Model\LicensePlateModel.cs" />
     <Compile Include="ViewModel\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -95,8 +101,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="View\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EMGU.CV">
+      <Version>3.4.3.3016</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

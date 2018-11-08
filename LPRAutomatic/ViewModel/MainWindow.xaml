@@ -12,15 +12,14 @@
             <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" TextWrapping="Wrap" Text="File name" VerticalAlignment="Top" Width="650"/>
             <Button x:Name="FindButton" Content="Load Image" Margin="665,10,10,0" VerticalAlignment="Top" Height="30" Click="FindButton_Click"/>
         </Grid>
-        <Grid x:Name="InfoGrid" HorizontalAlignment="Left" Height="345" VerticalAlignment="Top" Width="200" Margin="10,65,0,0" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-            <ListBox x:Name="InfoNumberListBox" HorizontalAlignment="Left" Height="325" Margin="10,10,0,0" VerticalAlignment="Top" Width="180"/>
+        <Grid x:Name="InfoGrid" HorizontalAlignment="Left" Width="200" Margin="10,65,0,10" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+            <ListBox x:Name="InfoNumberListBox" HorizontalAlignment="Left" Height="325" Margin="10,10,0,0" VerticalAlignment="Top" Width="180" SelectionChanged="InfoNumberListBox_SelectionChanged"/>
         </Grid>
         <Grid x:Name="CarImageGrid" Height="250" Margin="215,65,9.6,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
             <Image x:Name="CarImage" Height="230" Margin="10,10,10,0" VerticalAlignment="Top" OpacityMask="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
         </Grid>
-        <Grid x:Name="NumberImagesGrid" Height="90" Margin="215,320,9.6,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-            <Image HorizontalAlignment="Left" Height="70" Margin="10,10,0,0" VerticalAlignment="Top" Width="260"/>
-            <Image Height="70" Margin="299,10,10,0" VerticalAlignment="Top"/>
+        <Grid x:Name="NumberImagesGrid" Margin="215,320,9.6,10" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+            <Image x:Name="ImageOriginal" Height="70" Margin="299,10,10,0" VerticalAlignment="Top"/>
         </Grid>
     </Grid>
 </Window>

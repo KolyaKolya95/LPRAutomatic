@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LPRAutomatic.Common
+namespace LPRAutomatic.LPRACore
 {
     public class Class1
     {

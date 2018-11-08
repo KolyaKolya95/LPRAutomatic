@@ -15,7 +15,7 @@ namespace LPRAutomatic
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-
+          
         }
     }
 }
