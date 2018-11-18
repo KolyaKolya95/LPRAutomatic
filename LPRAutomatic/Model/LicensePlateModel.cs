@@ -5,6 +5,8 @@ namespace LPRAutomatic.Model
 {
     public class LicensePlateModel
     {
+        public string NameImage { get; set; }
+
         public string LicensePlate { get; set; }
 
         public Point[] Points { get; set; }
@@ -12,6 +14,8 @@ namespace LPRAutomatic.Model
         public ImageSource Image { get; set; }
 
         public ImageSource ImageLicensePlate { get; set; }
+
+        public int GuantityPlateResult { get; set; }
 
         public string Timer { get; set; }
 

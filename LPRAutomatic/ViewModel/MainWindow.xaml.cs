@@ -1,6 +1,7 @@
 ﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using LPRAutomatic.Helper;
 using LPRAutomatic.LPRCore;
 using LPRAutomatic.Model;
 using Microsoft.Win32;
@@ -28,13 +29,11 @@ namespace LPRAutomatic
 
         private LicensePlateDetector _licensePlateDetector;
 
-        private IList<LicensePlateModel> _infoLicensePlateModels;
-
         #region WPFmethod
 
         public MainWindow()
         {
-            _infoLicensePlateModels = new List<LicensePlateModel>();
+            _licensePlateDetector = new LicensePlateDetector(@"C:\Emgu\emgucv-windesktop_x64-cuda 3.1.0.2504\Emgu.CV.World\tessdata");
             InitializeComponent();
         }
 
@@ -55,26 +54,33 @@ namespace LPRAutomatic
             {
                 LicensePlateModel licensePlate = GetLicensePlate(openFileDialog.FileName);
 
-                ListBoxItem itm = new ListBoxItem();
-                itm.Content = licensePlate.LicensePlate;
+                if (!string.IsNullOrEmpty(licensePlate.LicensePlate))
+                {
+                    ListBoxItem itm = new ListBoxItem();
+                    itm.Content = licensePlate.LicensePlate;
+                    TimaLabel.Content = licensePlate.Timer;
+                    GuantityPlateLable.Content = licensePlate.GuantityPlateResult;
+                    InfoNumberListBox.Items.Add(itm);
+                    CarImage.Source = licensePlate.Image;
+                    ImageOriginal.Source = licensePlate.ImageLicensePlate;
 
-                InfoNumberListBox.Items.Add(itm);
-                CarImage.Source = licensePlate.Image;
-                ImageOriginal.Source = licensePlate.ImageLicensePlate;
-
-                _infoLicensePlateModels.Add(licensePlate);
+                    MemoryDictionaryHelper.AddLicensePlate(licensePlate);
+                }
             }
         }
 
         private void InfoNumberListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBoxItem listBoxItem = (ListBoxItem)InfoNumberListBox.SelectedItem;
-
-            LicensePlateModel licensePlate = _infoLicensePlateModels.FirstOrDefault(l => 
-                                             l.LicensePlate.Equals(listBoxItem.Content.ToString(), StringComparison.OrdinalIgnoreCase));
-
-            CarImage.Source = licensePlate.Image;
-            ImageOriginal.Source = licensePlate.ImageLicensePlate;
+            if (listBoxItem.Content != null)
+            {
+                LicensePlateModel licensePlate = MemoryDictionaryHelper.GetLicensePlate(listBoxItem.Content.ToString());
+                if (licensePlate != null)
+                {
+                    CarImage.Source = licensePlate.Image;
+                    ImageOriginal.Source = licensePlate.ImageLicensePlate;
+                }
+            }
         }
 
         #endregion
@@ -83,7 +89,7 @@ namespace LPRAutomatic
 
         private LicensePlateModel GetLicensePlate(string imageRoute)
         {
-            _licensePlateDetector = new LicensePlateDetector(@"C:\Emgu\emgucv-windesktop_x64-cuda 3.1.0.2504\Emgu.CV.World\tessdata");
+           
             Mat mate = new Mat(imageRoute);
             UMat uMat = mate.GetUMat(AccessType.ReadWrite);
 
@@ -121,7 +127,7 @@ namespace LPRAutomatic
                watch.Stop();
 
             licensePlateModel.Timer = watch.Elapsed.TotalMilliseconds.ToString();
-
+            licensePlateModel.GuantityPlateResult = words.Count;
             Point startPoint = new Point(10, 10);
             string numberLicense = string.Empty;
             for (int i = 0; i < words.Count; i++)

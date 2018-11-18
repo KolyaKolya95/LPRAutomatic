@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Text;
 
 namespace LPRAutomatic.LPRCore
@@ -35,26 +36,26 @@ namespace LPRAutomatic.LPRCore
             _ocr.SetVariable("tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVWXYZ-1234567890");
         }
 
-        private static void TesseractDownloadLangFile(String folder, String lang)
-        {
-            String subfolderName = "tessdata";
-            String folderName = Path.Combine(folder, subfolderName);
-            if (!Directory.Exists(folderName))
-            {
-                Directory.CreateDirectory(folderName);
-            }
-            String dest = Path.Combine(folderName, String.Format("{0}.traineddata", lang));
-            if (!File.Exists(dest))
-                using (System.Net.WebClient webclient = new System.Net.WebClient())
-                {
-                    String source =
-                        String.Format("https://github.com/tesseract-ocr/tessdata/blob/4592b8d453889181e01982d22328b5846765eaad/{0}.traineddata?raw=true", lang);
+        //private static void TesseractDownloadLangFile(String folder, String lang)
+        //{
+        //    String subfolderName = "tessdata";
+        //    String folderName = Path.Combine(folder, subfolderName);
+        //    if (!Directory.Exists(folderName))
+        //    {
+        //        Directory.CreateDirectory(folderName);
+        //    }
+        //    String dest = Path.Combine(folderName, String.Format("{0}.traineddata", lang));
+        //    if (!File.Exists(dest))
+        //        using (System.Net.WebClient webclient = new System.Net.WebClient())
+        //        {
+        //            String source =
+        //                String.Format("https://github.com/tesseract-ocr/tessdata/blob/4592b8d453889181e01982d22328b5846765eaad/{0}.traineddata?raw=true", lang);
 
-                    Console.WriteLine(String.Format("Downloading file from '{0}' to '{1}'", source, dest));
-                    webclient.DownloadFile(source, dest);
-                    Console.WriteLine(String.Format("Download completed"));
-                }
-        }
+        //            Console.WriteLine(String.Format("Downloading file from '{0}' to '{1}'", source, dest));
+        //            webclient.DownloadFile(source, dest);
+        //            Console.WriteLine(String.Format("Download completed"));
+        //        }
+        //}
 
         private void InitOcr(String path, String lang, OcrEngineMode mode)
         {
@@ -69,16 +70,14 @@ namespace LPRAutomatic.LPRCore
                 if (String.IsNullOrEmpty(path))
                     path = ".";
 
-                TesseractDownloadLangFile(path, lang);
-                TesseractDownloadLangFile(path, "osd"); //script orientation detection
                 String pathFinal = path.Length == 0 ||
                                    path.Substring(path.Length - 1, 1).Equals(Path.DirectorySeparatorChar.ToString())
                     ? path
-                    : String.Format("{0}{1}", path, System.IO.Path.DirectorySeparatorChar);
+                    : String.Format("{0}{1}", path, Path.DirectorySeparatorChar);
 
                 _ocr = new Tesseract(pathFinal, lang, mode);
             }
-            catch (System.Net.WebException e)
+            catch (WebException e)
             {
                 _ocr = null;
                 throw new Exception("Unable to download tesseract lang file. Please check internet connection.", e);
@@ -114,25 +113,10 @@ namespace LPRAutomatic.LPRCore
                 CvInvoke.Canny(gray, canny, 100, 50, 3, false);
                 int[,] hierachy = CvInvoke.FindContourTree(canny, contours, ChainApproxMethod.ChainApproxSimple);
 
-                FindLicensePlate(contours, hierachy, 0, gray, canny, licensePlateImagesList, filteredLicensePlateImagesList, detectedLicensePlateRegionList, licenses);
+                FindLicensePlate(contours, hierachy, 0, gray, canny, licensePlateImagesList, 
+                                filteredLicensePlateImagesList, detectedLicensePlateRegionList, licenses);
             }
             return licenses;
-        }
-
-        private static int GetNumberOfChildren(int[,] hierachy, int idx)
-        {
-            //first child
-            idx = hierachy[idx, 2];
-            if (idx < 0)
-                return 0;
-
-            int count = 1;
-            while (hierachy[idx, 0] > 0)
-            {
-                count++;
-                idx = hierachy[idx, 0];
-            }
-            return count;
         }
 
         private void FindLicensePlate(
@@ -239,6 +223,22 @@ namespace LPRAutomatic.LPRCore
                     }
                 }
             }
+        }
+
+        private static int GetNumberOfChildren(int[,] hierachy, int idx)
+        {
+            //first child
+            idx = hierachy[idx, 2];
+            if (idx < 0)
+                return 0;
+
+            int count = 1;
+            while (hierachy[idx, 0] > 0)
+            {
+                count++;
+                idx = hierachy[idx, 0];
+            }
+            return count;
         }
 
         /// <summary>

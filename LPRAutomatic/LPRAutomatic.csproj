@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>LCPicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -66,7 +69,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bll\LicensePlateDetector.cs" />
-    <Compile Include="Interfaces\IProcessingLicensePlate.cs" />
+    <Compile Include="Helper\MemoryDictionaryHelper.cs" />
     <Compile Include="Model\InfoLicensePlateModel.cs" />
     <Compile Include="Model\LicensePlateModel.cs" />
     <Compile Include="ViewModel\MainWindow.xaml.cs">
@@ -101,12 +104,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Interfaces\" />
     <Folder Include="View\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EMGU.CV">
       <Version>3.4.3.3016</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LCPicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Source\LCPicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
