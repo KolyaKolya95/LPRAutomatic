@@ -36,27 +36,6 @@ namespace LPRAutomatic.LPRCore
             _ocr.SetVariable("tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVWXYZ-1234567890");
         }
 
-        //private static void TesseractDownloadLangFile(String folder, String lang)
-        //{
-        //    String subfolderName = "tessdata";
-        //    String folderName = Path.Combine(folder, subfolderName);
-        //    if (!Directory.Exists(folderName))
-        //    {
-        //        Directory.CreateDirectory(folderName);
-        //    }
-        //    String dest = Path.Combine(folderName, String.Format("{0}.traineddata", lang));
-        //    if (!File.Exists(dest))
-        //        using (System.Net.WebClient webclient = new System.Net.WebClient())
-        //        {
-        //            String source =
-        //                String.Format("https://github.com/tesseract-ocr/tessdata/blob/4592b8d453889181e01982d22328b5846765eaad/{0}.traineddata?raw=true", lang);
-
-        //            Console.WriteLine(String.Format("Downloading file from '{0}' to '{1}'", source, dest));
-        //            webclient.DownloadFile(source, dest);
-        //            Console.WriteLine(String.Format("Download completed"));
-        //        }
-        //}
-
         private void InitOcr(String path, String lang, OcrEngineMode mode)
         {
             try
@@ -195,7 +174,6 @@ namespace LPRAutomatic.LPRCore
 
                             UMat filteredPlate = FilterPlate(plate);
 
-                            //Tesseract.Character[] words;
                             StringBuilder strBuilder = new StringBuilder();
                             using (UMat tmp = filteredPlate.Clone())
                             {
@@ -203,15 +181,6 @@ namespace LPRAutomatic.LPRCore
                                 _ocr.Recognize();
 
                                 strBuilder.Append(_ocr.GetUTF8Text());
-                                /*
-                                words = _ocr.GetCharacters();
-
-                                if (words.Length == 0) continue;
-
-                                for (int i = 0; i < words.Length; i++)
-                                {
-                                    strBuilder.Append(words[i].Text);
-                                }*/
                             }
 
                             licenses.Add(strBuilder.ToString());
@@ -250,7 +219,6 @@ namespace LPRAutomatic.LPRCore
         {
             UMat thresh = new UMat();
             CvInvoke.Threshold(plate, thresh, 120, 255, ThresholdType.BinaryInv);
-            //Image<Gray, Byte> thresh = plate.ThresholdBinaryInv(new Gray(120), new Gray(255));
 
             Size plateSize = plate.Size;
             using (Mat plateMask = new Mat(plateSize.Height, plateSize.Width, DepthType.Cv8U, 1))
@@ -273,7 +241,6 @@ namespace LPRAutomatic.LPRCore
                             Rectangle roi = new Rectangle(Point.Empty, plate.Size);
                             rect.Intersect(roi);
                             CvInvoke.Rectangle(plateMask, rect, new MCvScalar(), -1);
-                            //plateMask.Draw(rect, new Gray(0.0), -1);
                         }
                     }
 

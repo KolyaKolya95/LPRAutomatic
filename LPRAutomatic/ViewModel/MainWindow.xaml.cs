@@ -4,6 +4,7 @@ using Emgu.CV.Structure;
 using LPRAutomatic.Helper;
 using LPRAutomatic.LPRCore;
 using LPRAutomatic.Model;
+using LPRAutomatic.ViewModel;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using Point = System.Drawing.Point;
 
 namespace LPRAutomatic
@@ -33,8 +35,9 @@ namespace LPRAutomatic
 
         public MainWindow()
         {
-            _licensePlateDetector = new LicensePlateDetector(@"C:\Emgu\emgucv-windesktop_x64-cuda 3.1.0.2504\Emgu.CV.World\tessdata");
             InitializeComponent();
+            _licensePlateDetector = new LicensePlateDetector(@"C:\Emgu\emgucv-windesktop_x64-cuda 3.1.0.2504\Emgu.CV.World\tessdata");
+
         }
 
         private void FindButton_Click(object sender, RoutedEventArgs e)
@@ -192,6 +195,13 @@ namespace LPRAutomatic
         }
 
         #endregion
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            VideoLPRWindow videoLPRWindow = new VideoLPRWindow();
+            NavigationFrame.Content = videoLPRWindow;
+
+        }
     }
 }
 
