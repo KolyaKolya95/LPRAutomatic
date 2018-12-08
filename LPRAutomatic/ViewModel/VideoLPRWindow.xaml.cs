@@ -3,6 +3,8 @@ using AForge.Video.DirectShow;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using LPRAutomatic.Bll;
+using LPRAutomatic.Helper;
+using LPRAutomatic.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,19 +29,17 @@ namespace LPRAutomatic.ViewModel
         [DllImport("gdi32.dll")]
         public static extern bool DeleteObject(IntPtr hObject);
 
+        public static VideoCaptureDevice LocalWebCam;
+
         private LicensePlateDetectorInVideo _licensePlateDetectorInVideo;
 
         private Object _lock = new Object();
-
-        private VideoCaptureDevice LocalWebCam;
 
         public FilterInfoCollection LoaclWebCamsCollection;
 
         private Rectangle _rectangleOriginal;
 
         private CascadeClassifier cascadeClassifier;
-
-        private List<string> _plateList = new List<string>();
 
         public VideoLPRWindow()
         {
@@ -55,10 +55,9 @@ namespace LPRAutomatic.ViewModel
             LoaclWebCamsCollection = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             LocalWebCam = new VideoCaptureDevice(LoaclWebCamsCollection[0].MonikerString);
             LocalWebCam.NewFrame += new NewFrameEventHandler(Cam_NewFrame);
-
-            LocalWebCam.Start();
+           
+            LocalWebCam.Start(); 
         }
-
 
         void Cam_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
@@ -77,6 +76,7 @@ namespace LPRAutomatic.ViewModel
                 bi.Freeze();
                 Dispatcher.BeginInvoke(new ThreadStart(delegate
                 {
+
                     VideoImage.Source = bi;
                     Image<Bgr, Byte> imageCV = new Image<Bgr, Byte>(BitmapImage2Bitmap(bi));
 
@@ -91,79 +91,87 @@ namespace LPRAutomatic.ViewModel
                         if ((diferentRectangels.X != 0 ||  diferentRectangels.Y !=  0) && 
                             diferentRectangels.X > 40 && diferentRectangels.Y > 40 || (_rectangleOriginal.X == 0 && _rectangleOriginal.Y == 0))
                         {
-
                             _rectangleOriginal = rectanles;
 
                             imageCV.Draw(rectangles[0], new Bgr(0, 0, 255), 3);
-
                             VideoImage.Source = ToBitmapSource(imageCV);
-
                             imageCV.ROI = rectangles[0];
+
+                            RecognizedPlateImage.Source = ToBitmapSource(imageCV);
 
                             Task.Run(() =>
                             {
                                 lock (_lock)
                                 {
-                                    var a = ProcessImage(imageCV);
-                                    string plate = string.Empty;
-                                    foreach (var item in a)
+                                    var licensePlate = ProcessImage(imageCV);
+                                    if (licensePlate != null)
                                     {
-                                        Debug.WriteLine(item);
-                                  
-                                        plate = item.Replace(" ", string.Empty);
-                                        plate = plate.Replace("~", string.Empty);
-                                        plate = plate.Replace("/", string.Empty);
-                                        plate = plate.Replace("|", string.Empty);
-                                        plate = plate.Replace("_ ", string.Empty);
-                                        plate = plate.Replace("*", string.Empty);
-                                        Debug.WriteLine(plate);
-                                        if (plate.Length > 7)
-                                        {
-                                            if (!_plateList.Contains(item))
-                                            {
-                                                _plateList.Add(item);
-                                            }
-                                            else
-                                            {
-                                                _rectangleOriginal = new Rectangle();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            _rectangleOriginal = new Rectangle();
-                                        }
-                                       
-                                    }
-                                }
+                                        MemoryDictionaryHelper.AddLicensePlate(licensePlate);
 
+                                        LicensePlateList.Dispatcher.BeginInvoke((Action)(() => { AddToListBox(); })); 
+                                    }
+                                    else
+                                        _rectangleOriginal = new Rectangle();
+                                }
                             });
                         }
-
                     }
-
                 }));
 
             }
             catch (Exception ex)
             {
-
+                Debug.WriteLine(ex.Message);
             }
         }
 
-        private List<String> ProcessImage(IInputOutputArray image)
+
+        private void AddToListBox()
+        {                      
+            if (MemoryDictionaryHelper.Count() > 0 && 
+                MemoryDictionaryHelper.LastIndex < MemoryDictionaryHelper.AddedLastIndex )
+            {
+                var itmBox = new ListBoxItem();
+                itmBox.Content = MemoryDictionaryHelper.GetLatLicensePlate().LicensePlate;
+
+                if (!LicensePlateList.Items.Contains(itmBox))
+                {
+                    LicensePlateList.Items.Add(itmBox);
+                    MemoryDictionaryHelper.LastIndex = MemoryDictionaryHelper.AddedLastIndex;
+                }
+            }
+            TaskScheduler.FromCurrentSynchronizationContext();
+        }
+
+        private LicensePlateModel ProcessImage(IInputOutputArray image)
         {
             List<IInputOutputArray> licensePlateImagesList = new List<IInputOutputArray>();
             List<IInputOutputArray> filteredLicensePlateImagesList = new List<IInputOutputArray>();
             List<RotatedRect> licenseBoxList = new List<RotatedRect>();
-            List<string> words = _licensePlateDetectorInVideo.DetectLicensePlate(
+            List<string> plates = _licensePlateDetectorInVideo.DetectLicensePlate(
                image,
                licensePlateImagesList,
                filteredLicensePlateImagesList,
                licenseBoxList);
 
+            LicensePlateModel licensePlateModel = new LicensePlateModel();
+            foreach (var plate in plates)
+            {
+                Debug.WriteLine($"Sosurce string: {plate}");
+                var cleanPlate = CleaningLicensePlate.Cleaning(plate);
+                if (cleanPlate != null)
+                {
 
-           
-            return words;
+                    Debug.WriteLine($"Definit string: {plate}");
+
+                    licensePlateModel.LicensePlate = cleanPlate;
+                    licensePlateModel.CountFindItemLicensePlate = plates.Count;
+
+                    return licensePlateModel;
+                }
+            }
+
+            return null;
         }
 
         Bitmap GetBitmap(BitmapSource source)

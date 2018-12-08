@@ -61,6 +61,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bll\LicensePlateDetectorInVideo.cs" />
+    <Compile Include="Helper\CleaningLicensePlate.cs" />
+    <Compile Include="Helper\VideoCameraHepler.cs" />
+    <Compile Include="ViewModel\PhotoLPRWindow.xaml.cs">
+      <DependentUpon>PhotoLPRWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\VideoLPRWindow.xaml.cs">
       <DependentUpon>VideoLPRWindow.xaml</DependentUpon>
     </Compile>
@@ -80,6 +85,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ViewModel\PhotoLPRWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewModel\VideoLPRWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -137,6 +146,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Source\haarcascade_russian_plate_number.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Source\mainBackround.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
