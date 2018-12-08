@@ -60,6 +60,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Bll\LicensePlateDetectorInVideo.cs" />
+    <Compile Include="Helper\CleaningLicensePlate.cs" />
+    <Compile Include="Helper\VideoCameraHepler.cs" />
+    <Compile Include="ViewModel\PhotoLPRWindow.xaml.cs">
+      <DependentUpon>PhotoLPRWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\VideoLPRWindow.xaml.cs">
+      <DependentUpon>VideoLPRWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="ViewModel\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,6 +85,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ViewModel\PhotoLPRWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewModel\VideoLPRWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -108,6 +125,15 @@
     <Folder Include="View\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AForge">
+      <Version>2.2.5</Version>
+    </PackageReference>
+    <PackageReference Include="AForge.Video">
+      <Version>2.2.5</Version>
+    </PackageReference>
+    <PackageReference Include="AForge.Video.DirectShow">
+      <Version>2.2.5</Version>
+    </PackageReference>
     <PackageReference Include="EMGU.CV">
       <Version>3.4.3.3016</Version>
     </PackageReference>
@@ -117,6 +143,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Source\LCPicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Source\haarcascade_russian_plate_number.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Source\mainBackround.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

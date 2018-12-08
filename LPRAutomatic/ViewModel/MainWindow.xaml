@@ -5,51 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LPRAutomatic"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Icon="/LPRAutomatic;component/LCPicon.ico" Background="#FFCDCFD4">
+        Title="MainWindow" Height="450" Width="800" Icon="/LPRAutomatic;component/LCPicon.ico" Background="#FF0C369F">
 
-    <Grid x:Name="MainGrid" Background="#FFCDCFD4">
+    <Grid x:Name="MainGrid" Background="White">
 
-        <Grid x:Name="FileInfoGrid" Height="65" Margin="210,0,-0.4,0" VerticalAlignment="Top" Background="#FFCDCFD4" OpacityMask="#FFCDCFD4">
-            <TextBox x:Name="FileNameTextBox" Height="30" Margin="10,14,113,0" Text="File name" VerticalAlignment="Top" FontSize="14" IsUndoEnabled="True" TextOptions.TextFormattingMode="Display" BorderBrush="White"/>
-            <Button x:Name="FindButton" Content="Load Image" Margin="0,14,10,0" VerticalAlignment="Top" Height="30" Click="FindButton_Click" HorizontalAlignment="Right" Width="99" Background="#FF16A085" FontSize="14" TextOptions.TextFormattingMode="Display" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" BorderBrush="#FF16A085"/>
+        <Grid Height="20" VerticalAlignment="Top" Background="#FF303D45" Margin="0,0,-0.4,0">
+            <Menu  Height="Auto" Width="Auto" VerticalAlignment="Bottom" Background="#FF303D45" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
+                <MenuItem x:Name="FileMenuItem" Width="99" Height="20" Header="File" Foreground="#FFCDCFD4" Background="#FF303D45">
+                    <MenuItem x:Name="PhotoMenuItem" Header="Photo" Foreground="#FFCDCFD4" Background="#FF303D45" ForceCursor="False" Click="PhotoMenuItem_Click"/>
+                    <MenuItem x:Name="VideoMenuItem" Header="Video" Foreground="#FFCDCFD4" Background="#FF303D45" Click="VideoMenuItem_Click"/>
+                </MenuItem>
+                <MenuItem x:Name="SettingMenuItem" Width="99" Height="20" Header="Tolls" Foreground="#FFCDCFD4">
+                    <MenuItem x:Name="SaveToExcel" Header="Save to Excel file" Foreground="#FFCDCFD4" Background="#FF303D45"/>
+                </MenuItem>
+                <MenuItem x:Name="InfoMenuItem" Width="99" Height="20" Header="Help" Foreground="#FFCDCFD4">
+                    <MenuItem x:Name="ViewHelp" Header="View Help" Foreground="#FFCDCFD4" Background="#FF303D45"/>
+                    <MenuItem x:Name="About" Header="About" Foreground="#FFCDCFD4" Background="#FF303D45"/>
+                </MenuItem> >
+
+            </Menu>
         </Grid>
-        <Grid x:Name="InfoGrid" HorizontalAlignment="Left" Width="210" Background="#FF535E64">
-            <Grid.OpacityMask>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
-                </LinearGradientBrush>
-            </Grid.OpacityMask>
-            <ListBox x:Name="InfoNumberListBox" HorizontalAlignment="Left" Width="210" SelectionChanged="InfoNumberListBox_SelectionChanged" Background="#FF535E64" IsSynchronizedWithCurrentItem="True" Foreground="White"/>
-        </Grid>
-        <Grid x:Name="CarImageGrid" Margin="210,65,-0.4,105" Background="#FFCDCFD4">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="27*"/>
-                <RowDefinition Height="223*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="568*"/>
-            </Grid.ColumnDefinitions>
-            <Image x:Name="CarImage" Margin="9.2,10,9.8,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.Column="1" Grid.RowSpan="2"/>
-        </Grid>
-        <Grid x:Name="NumberImagesGrid" Margin="210,0,-0.4,0" Height="115" VerticalAlignment="Bottom" Background="#FFCDCFD4">
-            <Image x:Name="ImageOriginal" Margin="0,10,10,10" HorizontalAlignment="Right" Width="335" RenderTransformOrigin="0.5,0.5">
-                <Image.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="-0.203"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Image.RenderTransform>
-            </Image>
-            <Grid x:Name="InfoOperationGrid" HorizontalAlignment="Left" Height="95" Margin="10,10,0,0" VerticalAlignment="Top" Width="218">
-                <Label x:Name="TimaLabel" HorizontalAlignment="Right" Margin="0,0,10,59" VerticalAlignment="Bottom" Width="123" Height="29" FontSize="14"/>
-                <Label x:Name="GuantityPlateLable" Content="" HorizontalAlignment="Right" Margin="0,59,19,0" VerticalAlignment="Top" Width="70"/>
-                <Label Content="Time:" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Width="70" FontSize="14" Height="31" Foreground="#FF428279"/>
-                <Label Content="Count result:" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Width="114" FontSize="14" Foreground="#FF428279"/>
-            </Grid>
-        </Grid>
+        <Frame x:Name="NavigationFrame" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Margin="0, 20, 0, 0" Panel.ZIndex="1"/>
+        <Image x:Name="MainImage" HorizontalAlignment="Stretch" Margin="60,80,60,60" VerticalAlignment="Stretch" OpacityMask="#FF3C3535"/>
+
     </Grid>
 </Window>
