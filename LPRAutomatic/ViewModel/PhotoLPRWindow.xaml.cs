@@ -1,9 +1,13 @@
-﻿using Emgu.CV;
+﻿using DatabaseLibrary.Management;
+using DatabaseLibrary.Model;
+using DatabaseLibrary.Parsers;
+using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using LPRAutomatic.Helper;
 using LPRAutomatic.LPRCore;
 using LPRAutomatic.Model;
+using LPRAutomatic.Model.ModelView;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -29,11 +33,15 @@ namespace LPRAutomatic.ViewModel
         public static extern bool DeleteObject(IntPtr hObject);
 
         private LicensePlateDetector _licensePlateDetector;
+        private FileParser _fileParser;
+
+        private UserManager _userManagement;
 
         public PhotoLPRWindow()
         {
             InitializeComponent();
-            InitializeComponent();
+            _userManagement = new UserManager();
+            _fileParser = new FileParser();
             _licensePlateDetector = new LicensePlateDetector(@"C:\Emgu\emgucv-windesktop_x64-cuda 3.1.0.2504\Emgu.CV.World\tessdata");
         }
 
@@ -57,27 +65,48 @@ namespace LPRAutomatic.ViewModel
                 if (!string.IsNullOrEmpty(licensePlate.LicensePlate))
                 {
                     Dispatcher.Invoke((Action)(() =>
-                   {
-                       ListBoxItem itm = new ListBoxItem();
-                       itm.Content = licensePlate.LicensePlate;
-                       TimaLabel.Content = licensePlate.Timer;
-                       GuantityPlateLable.Content = licensePlate.GuantityPlateResult;
-                       InfoNumberListBox.Items.Add(itm);
-                       CarImage.Source = licensePlate.Image;
-                       ImageOriginal.Source = licensePlate.ImageLicensePlate;
+                    {
+                        licensePlate.LicensePlate = CleaningLicensePlate.Cleaning(licensePlate.LicensePlate);
+                        var user = _userManagement.GetUser(licensePlate.LicensePlate);
 
-                       MemoryDictionaryHelper.AddLicensePlate(licensePlate);
-                   }));
+                        if (user != null)
+                        {
+                            InfoNumberListBox.Items.Add(UserHelper.ConverToLicensePlateUserModel(user));
+                        }
+                        else
+                        {
+                            user = new UserModel
+                            {
+                                LicensePlate = licensePlate.LicensePlate,
+                                Name = "Add new User",
+                            };
+
+                            InfoNumberListBox.Items.Add(UserHelper.ConverToLicensePlateUserModel(user));
+                        }
+
+                        TimaLabel.Content = licensePlate.Timer;
+                        GuantityPlateLable.Content = licensePlate.GuantityPlateResult;
+
+                        CarImage.Source = licensePlate.Image;
+                        ImageOriginal.Source = licensePlate.ImageLicensePlate;
+
+                        MemoryDictionaryHelper.AddLicensePlate(licensePlate);
+                    }));
                 }
             }
         }
 
+        private void ShowUserInfo_Click(object sender, RoutedEventArgs e)
+        {
+          
+        }
+
         private void InfoNumberListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBoxItem listBoxItem = (ListBoxItem)InfoNumberListBox.SelectedItem;
-            if (listBoxItem.Content != null)
+            LicensePlateUserModel listBoxItem = (LicensePlateUserModel)InfoNumberListBox.SelectedItem;
+            if (listBoxItem != null)
             {
-                LicensePlateModel licensePlate = MemoryDictionaryHelper.GetLicensePlate(listBoxItem.Content.ToString());
+                LicensePlateModel licensePlate = MemoryDictionaryHelper.GetLicensePlate(listBoxItem.LicensePlate);
                 if (licensePlate != null)
                 {
                     CarImage.Source = licensePlate.Image;
@@ -194,5 +223,38 @@ namespace LPRAutomatic.ViewModel
         }
 
         #endregion
+
+        private void EditUerButton_Click(object sender, RoutedEventArgs e)
+        {
+            LicensePlateUserModel listBoxItem = (LicensePlateUserModel)InfoNumberListBox.SelectedItem;
+            var user = new UserModel();
+
+            if (!string.IsNullOrEmpty(listBoxItem.UserName))
+                user = _userManagement.GetUser(listBoxItem.LicensePlate);
+            else
+                user.LicensePlate = listBoxItem.LicensePlate;
+
+
+            InfoUserWindow infoUserWindow = new InfoUserWindow(LicensePlateUserModel.ConvertToLincensePlateUserModel(user));
+
+            if (infoUserWindow.ShowDialog() == true)
+            {
+               
+            }
+            else
+            {
+
+                int index = InfoNumberListBox.SelectedIndex;
+                InfoNumberListBox.Items.RemoveAt(index);
+
+                var licensePlate = InfoUserWindow.LicensePlateUserModel;
+
+                InfoNumberListBox.Items.Insert(index, licensePlate);
+
+              //  MemoryDictionaryHelper.AddLicensePlate(licensePlate);
+                //InfoNumberListBox.Items.Refresh();
+                //InfoNumberListBox.UpdateLayout();
+            }
+        }
     }
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LPRAutomatic", "LPRAutomati
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4042C4B0-90BA-4489-886A-C6C8CC853696}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLibrary", "DatabaseLibrary\DatabaseLibrary.csproj", "{70D1C810-7D48-44A9-A82A-2B4D20B001BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{81DDF715-0EE6-48C1-873D-0311A6485AD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81DDF715-0EE6-48C1-873D-0311A6485AD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81DDF715-0EE6-48C1-873D-0311A6485AD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70D1C810-7D48-44A9-A82A-2B4D20B001BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70D1C810-7D48-44A9-A82A-2B4D20B001BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70D1C810-7D48-44A9-A82A-2B4D20B001BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70D1C810-7D48-44A9-A82A-2B4D20B001BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

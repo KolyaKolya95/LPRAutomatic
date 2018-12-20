@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 
 namespace LPRAutomatic.Helper
 {
     public static class CleaningLicensePlate
     {
-
         public static string Cleaning(string plate)
         {
             string licensePlate = string.Empty;
@@ -17,14 +11,33 @@ namespace LPRAutomatic.Helper
             plate = plate.Replace("\r\n", string.Empty);
             plate = plate.Replace(" ", "");
 
-            Regex regex = new Regex(@"^(?<city>([A-Z]{1,3})(?<number>([0-9]{1,4}))(?<servicNumber>([A-Z]{1,3})))");
+            Regex regex = new Regex(@"^((?<city>([A-Z]{1,3}))(?<number>([0-9]{1,4}))(?<servicNumber>([A-Z]{1,3})))");
 
-            MatchCollection matches = regex.Matches(plate);
-            if (matches.Count > 0)
+
+            string city = string.Empty;
+            string number = string.Empty;
+            string servicNumber = string.Empty;
+
+            Match match = regex.Match(plate);
+            if (match.Success)
             {
-                foreach (Match match in matches)
-                    licensePlate = licensePlate + match.Value;
+                city = match.Groups["city"].Value;
+                city = city.Length > 2 ? city.Remove(city.Length - 1) : city;
+
+                number = match.Groups["number"].Value;
+
+                servicNumber = match.Groups["servicNumber"].Value;
+                servicNumber = servicNumber.Length > 2 ? servicNumber.Remove(servicNumber.Length - 1) : servicNumber;
             }
+
+            licensePlate = city + number + servicNumber;
+
+            //MatchCollection matches = regex.Matches(plate);
+            //if (matches.Count > 0)
+            //{
+            //    foreach (Match match in matches)
+            //        licensePlate = licensePlate + match.Value;
+            //}
 
             if (licensePlate.Length > 0)
                 return licensePlate;

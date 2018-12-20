@@ -22,9 +22,11 @@ namespace LPRAutomatic.Helper
 
         public static void AddLicensePlate(LicensePlateModel licensePlate)
         {
+            licensePlate.LicensePlate = CleaningLicensePlate.Cleaning(licensePlate.LicensePlate);
             if (!string.IsNullOrEmpty(licensePlate.LicensePlate))
                 _infoLicensePlateModels[licensePlate.LicensePlate] = licensePlate;
         }
+
 
         public static int Count()
         {

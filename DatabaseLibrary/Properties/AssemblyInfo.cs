@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LPRAutomatic.LPRCore")]
+[assembly: AssemblyTitle("DatabaseLibrary")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LPRAutomatic.LPRCore")]
+[assembly: AssemblyProduct("DatabaseLibrary")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("cd22e117-0d85-4a3a-a280-fd03de09bb24")]
+[assembly: Guid("70d1c810-7d48-44a9-a82a-2b4d20b001bf")]
 
 // Version information for an assembly consists of the following four values:
 //

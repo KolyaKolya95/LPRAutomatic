@@ -20,25 +20,24 @@
                 </LinearGradientBrush>
             </Grid.OpacityMask>
             <ListBox x:Name="InfoNumberListBox" HorizontalAlignment="Left" Width="197" SelectionChanged="InfoNumberListBox_SelectionChanged" Background="#FF535E64" IsSynchronizedWithCurrentItem="True" Foreground="White" Margin="1,2,0,-1" BorderBrush="#FF535E64" RenderTransformOrigin="0.5,0.5" FontSize="14">
-                <ListBox.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="0.098"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </ListBox.RenderTransform>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0.5" MinWidth="160" MinHeight="50">
+                            <TextBlock FontSize="12" Text="{Binding Path=LicensePlate}" HorizontalAlignment="Stretch" />
+                            <TextBlock FontSize="12" Text="{Binding Path=UserName}" HorizontalAlignment="Stretch" />
+                            <TextBlock FontSize="12" Text="{Binding Path=Address}" HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                    </DataTemplate>
+                    
+                </ListBox.ItemTemplate>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Edite" Click="EditUerButton_Click"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
             </ListBox>
         </Grid>
         <Grid x:Name="CarImageGrid" Margin="200,46,0,104.6" Background="#FFCDCFD4">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="8*"/>
-                <RowDefinition Height="85*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="568*"/>
-            </Grid.ColumnDefinitions>
             <Image x:Name="CarImage" Margin="9.2,10,10,10.2" OpacityMask="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.Column="1" Grid.RowSpan="2"/>
         </Grid>
         <Grid x:Name="NumberImagesGrid" Margin="200,0,0,-0.4" Height="115" VerticalAlignment="Bottom" Background="#FFCDCFD4">
@@ -56,7 +55,7 @@
                 <Label x:Name="TimaLabel" HorizontalAlignment="Right" Margin="0,0,10,59" VerticalAlignment="Bottom" Width="123" Height="29" FontSize="14"/>
                 <Label x:Name="GuantityPlateLable" Content="" HorizontalAlignment="Right" Margin="0,59,19,0" VerticalAlignment="Top" Width="70"/>
                 <Label Content="Time:" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Width="70" FontSize="14" Height="31" Foreground="#FF428279"/>
-                <Label Content="Count result:" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Width="114" FontSize="14" Foreground="#FF428279"/>
+                <Label Content="Count result:" Margin="10,59,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FF428279" HorizontalAlignment="Left" Width="114"/>
             </Grid>
         </Grid>
     </Grid>
