@@ -25,14 +25,14 @@
                         <StackPanel Margin="0.5" MinWidth="160" MinHeight="50">
                             <TextBlock FontSize="12" Text="{Binding Path=LicensePlate}" HorizontalAlignment="Stretch" />
                             <TextBlock FontSize="12" Text="{Binding Path=UserName}" HorizontalAlignment="Stretch" />
-                            <TextBlock FontSize="12" Text="{Binding Path=Address}" HorizontalAlignment="Stretch" />
+                            <!--<TextBlock FontSize="12" Text="{Binding Path=Address}" HorizontalAlignment="Stretch" />-->
                         </StackPanel>
                     </DataTemplate>
-                    
                 </ListBox.ItemTemplate>
                 <ListBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Edite" Click="EditUerButton_Click"/>
+                        <MenuItem Header="Send Email" Click="SendEmailButton_Click"/>
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>

@@ -1,10 +1,14 @@
 ﻿using AForge.Video;
 using AForge.Video.DirectShow;
+using DatabaseLibrary.Management;
+using DatabaseLibrary.Model;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using LPRAutomatic.Bll;
 using LPRAutomatic.Helper;
 using LPRAutomatic.Model;
+using LPRAutomatic.Model.ModelView;
+using LPRAutomatic.View;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,6 +45,8 @@ namespace LPRAutomatic.ViewModel
 
         private CascadeClassifier cascadeClassifier;
 
+        private UserManager _userManagement;
+
         public VideoLPRWindow()
         {
             InitializeComponent();
@@ -48,6 +54,7 @@ namespace LPRAutomatic.ViewModel
             Loaded += MainWindow_Loaded;
             cascadeClassifier = new CascadeClassifier(@"D:\MyPrograms\C#\DotNet\WpfAppCamera\haarcascade_russian_plate_number.xml");
             _licensePlateDetectorInVideo = new LicensePlateDetectorInVideo(@"C:\Emgu\emgucv-windesktop_x64-cuda 3.1.0.2504\Emgu.CV.World\tessdata");
+            _userManagement = new UserManager();
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -108,7 +115,7 @@ namespace LPRAutomatic.ViewModel
                                     {
                                         MemoryDictionaryHelper.AddLicensePlate(licensePlate);
 
-                                        LicensePlateList.Dispatcher.BeginInvoke((Action)(() => { AddToListBox(); })); 
+                                        LicensePlateList.Dispatcher.BeginInvoke((Action)(() => { AddToListBox(licensePlate); })); 
                                     }
                                     else
                                         _rectangleOriginal = new Rectangle();
@@ -126,20 +133,38 @@ namespace LPRAutomatic.ViewModel
         }
 
 
-        private void AddToListBox()
-        {                      
-            if (MemoryDictionaryHelper.Count() > 0 && 
-                MemoryDictionaryHelper.LastIndex < MemoryDictionaryHelper.AddedLastIndex )
-            {
-                var itmBox = new ListBoxItem();
-                itmBox.Content = MemoryDictionaryHelper.GetLatLicensePlate().LicensePlate;
+        private void AddToListBox(LicensePlateModel licensePlate)
+        {
+            //if (MemoryDictionaryHelper.Count() > 0 &&
+            //    MemoryDictionaryHelper.LastIndex < MemoryDictionaryHelper.AddedLastIndex)
+            //{
+            //    var itmBox = new ListBoxItem();
+            //    itmBox.Content = MemoryDictionaryHelper.GetLatLicensePlate().LicensePlate;
 
-                if (!LicensePlateList.Items.Contains(itmBox))
-                {
-                    LicensePlateList.Items.Add(itmBox);
-                    MemoryDictionaryHelper.LastIndex = MemoryDictionaryHelper.AddedLastIndex;
-                }
+            //    if (!LicensePlateList.Items.Contains(itmBox))
+            //    {
+            //        LicensePlateList.Items.Add(itmBox);
+            //        MemoryDictionaryHelper.LastIndex = MemoryDictionaryHelper.AddedLastIndex;
+            //    }
+            //}
+
+            licensePlate.LicensePlate = CleaningLicensePlate.Cleaning(licensePlate.LicensePlate);
+            var user = _userManagement.GetUser(licensePlate.LicensePlate);
+
+            if (user != null)
+            {
+                LicensePlateList.Items.Add(UserHelper.ConverToLicensePlateUserModel(user));
             }
+            else
+            {
+                user = new UserModel
+                {
+                    LicensePlate = licensePlate.LicensePlate
+                };
+
+                LicensePlateList.Items.Add(UserHelper.ConverToLicensePlateUserModel(user));
+            }
+
             TaskScheduler.FromCurrentSynchronizationContext();
         }
 
@@ -234,6 +259,43 @@ namespace LPRAutomatic.ViewModel
             result.Width = defRectangle.Width - originalRectangle.Width;
 
             return result;
+        }
+
+        private void LicensePlateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void EditUerButton_Click(object sender, RoutedEventArgs e)
+        {
+            LicensePlateUserModel listBoxItem = (LicensePlateUserModel)LicensePlateList.SelectedItem;
+            var user = new UserModel();
+
+            if (!string.IsNullOrEmpty(listBoxItem.UserName))
+                user = _userManagement.GetUser(listBoxItem.LicensePlate);
+            else
+                user.LicensePlate = listBoxItem.LicensePlate;
+
+
+            InfoUserWindow infoUserWindow = new InfoUserWindow(LicensePlateUserModel.ConvertToLincensePlateUserModel(user));
+
+            if (infoUserWindow.ShowDialog() == true)
+            {
+
+            }
+            else
+            {
+                int index = LicensePlateList.SelectedIndex;
+                LicensePlateList.Items.RemoveAt(index);
+
+                var licensePlate = InfoUserWindow.LicensePlateUserModel;
+
+                LicensePlateList.Items.Insert(index, licensePlate);
+            }
+        }
+
+        private void SendEmailButton_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

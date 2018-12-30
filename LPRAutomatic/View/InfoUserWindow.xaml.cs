@@ -4,7 +4,7 @@ using LPRAutomatic.Helper;
 using LPRAutomatic.Model.ModelView;
 using System.Windows;
 
-namespace LPRAutomatic.ViewModel
+namespace LPRAutomatic.View
 {
     /// <summary>
     /// Interaction logic for InfoUserWindow.xaml

@@ -8,6 +8,7 @@ using LPRAutomatic.Helper;
 using LPRAutomatic.LPRCore;
 using LPRAutomatic.Model;
 using LPRAutomatic.Model.ModelView;
+using LPRAutomatic.View;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -77,8 +78,7 @@ namespace LPRAutomatic.ViewModel
                         {
                             user = new UserModel
                             {
-                                LicensePlate = licensePlate.LicensePlate,
-                                Name = "Add new User",
+                                LicensePlate = licensePlate.LicensePlate
                             };
 
                             InfoNumberListBox.Items.Add(UserHelper.ConverToLicensePlateUserModel(user));
@@ -113,6 +113,38 @@ namespace LPRAutomatic.ViewModel
                     ImageOriginal.Source = licensePlate.ImageLicensePlate;
                 }
             }
+        }
+
+        private void EditUerButton_Click(object sender, RoutedEventArgs e)
+        {
+            LicensePlateUserModel listBoxItem = (LicensePlateUserModel)InfoNumberListBox.SelectedItem;
+            var user = new UserModel();
+
+            if (!string.IsNullOrEmpty(listBoxItem.UserName))
+                user = _userManagement.GetUser(listBoxItem.LicensePlate);
+            else
+                user.LicensePlate = listBoxItem.LicensePlate;
+
+
+            InfoUserWindow infoUserWindow = new InfoUserWindow(LicensePlateUserModel.ConvertToLincensePlateUserModel(user));
+
+            if (infoUserWindow.ShowDialog() == true)
+            {
+
+            }
+            else
+            {
+                int index = InfoNumberListBox.SelectedIndex;
+                InfoNumberListBox.Items.RemoveAt(index);
+
+                var licensePlate = InfoUserWindow.LicensePlateUserModel;
+
+                InfoNumberListBox.Items.Insert(index, licensePlate);
+            }
+        }
+
+        private void SendEmailButton_Click(object sender, RoutedEventArgs e)
+        {
         }
 
         #region Private
@@ -223,38 +255,5 @@ namespace LPRAutomatic.ViewModel
         }
 
         #endregion
-
-        private void EditUerButton_Click(object sender, RoutedEventArgs e)
-        {
-            LicensePlateUserModel listBoxItem = (LicensePlateUserModel)InfoNumberListBox.SelectedItem;
-            var user = new UserModel();
-
-            if (!string.IsNullOrEmpty(listBoxItem.UserName))
-                user = _userManagement.GetUser(listBoxItem.LicensePlate);
-            else
-                user.LicensePlate = listBoxItem.LicensePlate;
-
-
-            InfoUserWindow infoUserWindow = new InfoUserWindow(LicensePlateUserModel.ConvertToLincensePlateUserModel(user));
-
-            if (infoUserWindow.ShowDialog() == true)
-            {
-               
-            }
-            else
-            {
-
-                int index = InfoNumberListBox.SelectedIndex;
-                InfoNumberListBox.Items.RemoveAt(index);
-
-                var licensePlate = InfoUserWindow.LicensePlateUserModel;
-
-                InfoNumberListBox.Items.Insert(index, licensePlate);
-
-              //  MemoryDictionaryHelper.AddLicensePlate(licensePlate);
-                //InfoNumberListBox.Items.Refresh();
-                //InfoNumberListBox.UpdateLayout();
-            }
-        }
     }
 }

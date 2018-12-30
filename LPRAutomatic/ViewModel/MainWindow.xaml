@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LPRAutomatic"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Icon="/LPRAutomatic;component/LCPicon.ico" Background="#FF0C369F">
 
@@ -17,12 +16,13 @@
                 </MenuItem>
                 <MenuItem x:Name="SettingMenuItem" Width="99" Height="20" Header="Tolls" Foreground="#FFCDCFD4">
                     <MenuItem x:Name="LoadData" Header="Load data" Foreground="#FFCDCFD4" Background="#FF303D45" Click="LoadData_Click"/>
-                    <MenuItem x:Name="SaveToExcel" Header="Save to Excel file" Foreground="#FFCDCFD4" Background="#FF303D45"/>
+                    <MenuItem x:Name="SaveToExcel" Header="Save to Excel file" Foreground="#FFCDCFD4" Background="#FF303D45" Click="SaveToExcel_Click"/>
+                    <MenuItem x:Name="CelarAll" Header="Clear all items" Foreground="#FFCDCFD4" Background="#FF303D45" Click="ClearAllItems_Click"/>
                 </MenuItem>
-                <MenuItem x:Name="InfoMenuItem" Width="99" Height="20" Header="Help" Foreground="#FFCDCFD4">
+                <!--<MenuItem x:Name="InfoMenuItem" Width="99" Height="20" Header="Help" Foreground="#FFCDCFD4">
                     <MenuItem x:Name="ViewHelp" Header="View Help" Foreground="#FFCDCFD4" Background="#FF303D45"/>
                     <MenuItem x:Name="About" Header="About" Foreground="#FFCDCFD4" Background="#FF303D45"/>
-                </MenuItem> 
+                </MenuItem>--> 
 
             </Menu>
         </Grid>

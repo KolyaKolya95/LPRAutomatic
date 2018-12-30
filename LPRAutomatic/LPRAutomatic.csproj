@@ -65,10 +65,7 @@
     <Compile Include="Helper\UserHelper.cs" />
     <Compile Include="Helper\VideoCameraHepler.cs" />
     <Compile Include="Model\ModelView\LicensePlateUserModel.cs" />
-    <Compile Include="ViewModel\AddNewUserWindow.xaml.cs">
-      <DependentUpon>AddNewUserWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModel\InfoUserWindow.xaml.cs">
+    <Compile Include="View\InfoUserWindow.xaml.cs">
       <DependentUpon>InfoUserWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\PhotoLPRWindow.xaml.cs">
@@ -77,14 +74,7 @@
     <Compile Include="ViewModel\VideoLPRWindow.xaml.cs">
       <DependentUpon>VideoLPRWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserProfile.xaml.cs">
-      <DependentUpon>UserProfile.xaml</DependentUpon>
-    </Compile>
-    <Page Include="ViewModel\AddNewUserWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewModel\InfoUserWindow.xaml">
+    <Page Include="View\InfoUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -98,7 +88,6 @@
     </Compile>
     <Compile Include="Bll\LicensePlateDetector.cs" />
     <Compile Include="Helper\MemoryDictionaryHelper.cs" />
-    <Compile Include="Model\InfoLicensePlateModel.cs" />
     <Compile Include="Model\LicensePlateModel.cs" />
     <Compile Include="ViewModel\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -109,10 +98,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewModel\VideoLPRWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserProfile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
