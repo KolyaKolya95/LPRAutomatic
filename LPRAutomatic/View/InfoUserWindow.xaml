@@ -1,0 +1,27 @@
+﻿<Window x:Class="LPRAutomatic.View.InfoUserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LPRAutomatic.ViewModel"
+        mc:Ignorable="d"
+      
+        Title="User Information" Height="438.4" Width="407.2" 
+        ResizeMode="NoResize" Background="#FFCDCFD4"
+        
+        >
+    <Grid Margin="0,0,-0.4,1.4">
+        <TextBox x:Name="UserNameTextBox" HorizontalAlignment="Left" Height="25" Margin="9,81,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="374" Background="#FFB6B6BA" BorderBrush="#FFB6B6BA" Foreground="#FF428279" FontSize="14" FontWeight="Bold"/>
+        <Label x:Name="UserNameLabel1" Content="User Name" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" Width="100" Foreground="#FF4E575A" FontWeight="Bold" FontSize="14" />
+        <Label x:Name="UserInformationLabel1" Content="User Informarion" HorizontalAlignment="Left" Margin="110,11,0,0" VerticalAlignment="Top" Width="186" FontSize="20" FontWeight="Bold" Background="{x:Null}" Foreground="#FF556380"/>
+        <Label x:Name="LicensePlateLabel1" Content="License Plate" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" Width="100" Foreground="#FF4E575A" FontWeight="Bold" FontSize="14" />
+        <TextBox x:Name="LicensePlateTextBox" HorizontalAlignment="Left" Height="25" Margin="10,155,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="374"  Background="#FFB6B6BA" BorderBrush="#FFB6B6BA" Foreground="#FF428279" FontSize="14" FontWeight="Bold"/>
+        <Label x:Name="AddressLabel" Content="Adress" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top" Width="100" Foreground="#FF4E575A" FontWeight="Bold" FontSize="14" />
+        <TextBox x:Name="AddressTextBox1" HorizontalAlignment="Left" Height="25" Margin="10,230,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="374"  Background="#FFB6B6BA" BorderBrush="#FFB6B6BA" Foreground="#FF428279" FontSize="14" FontWeight="Bold"/>
+        <Label x:Name="EmailLabel" Content="Email" HorizontalAlignment="Left" Margin="10,270,0,0" VerticalAlignment="Top" Width="100" Foreground="#FF4E575A" FontWeight="Bold" FontSize="14" />
+        <TextBox x:Name="EmailTextBox" HorizontalAlignment="Left" Height="25" Margin="10,304,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="374" Background="#FFB6B6BA" BorderBrush="#FFB6B6BA" Foreground="#FF428279" FontSize="14" FontWeight="Bold"/>
+        <Button x:Name="SaveBtn" Content="Save" HorizontalAlignment="Left" Height="32" Margin="160,354,0,0" VerticalAlignment="Top" Width="100" Background="#FF0D6C60" FontSize="16" FontWeight="Bold" Foreground="White" Click="SaveBtn_Click"/>
+        <Button x:Name="CloseBtn" Content="Close" HorizontalAlignment="Left" Height="32" Margin="283,354,0,0" VerticalAlignment="Top" Width="100" Background="#FF0D6C60" Foreground="White" FontSize="16" FontWeight="Bold" Click="CloseBtn_Click"/>
+
+    </Grid>
+</Window>

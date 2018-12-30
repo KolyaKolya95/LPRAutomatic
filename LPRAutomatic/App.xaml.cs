@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LPRAutomatic.ViewModel;
+using System;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace LPRAutomatic
 {
@@ -13,5 +10,15 @@ namespace LPRAutomatic
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+          
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            if (VideoLPRWindow.LocalWebCam != null)
+                 Dispatcher.Invoke( (Action) (() => VideoLPRWindow.LocalWebCam.Stop()));
+        }
     }
 }
